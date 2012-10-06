@@ -6,6 +6,8 @@ const char MEDP::FORWARD_COMMAND_CHAR = 'F';
 const char MEDP::BACKWARD_COMMAND_CHAR = 'B';
 const char MEDP::LEFT_TURN_COMMAND_CHAR = 'L';
 const char MEDP::RIGHT_TURN_COMMAND_CHAR = 'R';
+const char MEDP::LEFT_TURN_TEST_COMMAND_CHAR = 'l';
+const char MEDP::RIGHT_TURN_TEST_COMMAND_CHAR = 'r';
 
 void MEDP::setup() {
   Serial.begin(9600); // Used to debug the application
@@ -41,6 +43,10 @@ void MEDP::executeCommand(String command) {
     executeTurnLeft(command);
   } else if (commandIdentifier == MEDP::RIGHT_TURN_COMMAND_CHAR) {
     executeTurnRight(command);
+  } else if (commandIdentifier == MEDP::LEFT_TURN_TEST_COMMAND_CHAR) {
+    executeTurnTestLeft(command);
+  } else if (commandIdentifier == MEDP::RIGHT_TURN_TEST_COMMAND_CHAR) {
+    executeTurnTestRight(command);
   }
 }
 
@@ -70,6 +76,20 @@ void MEDP::executeTurnRight(String command){
 
   PoombaEngines pe;
   pe.turnRight(rotationDegrees);
+}
+
+void MEDP::executeTurnTestLeft(String command){
+  int rotationDegrees = parseInt(command.substring(1));
+
+  PoombaEngines pe;
+  pe.turnLeft(rotationDegrees, true);
+}
+
+void MEDP::executeTurnTestRight(String command){
+  int rotationDegrees = parseInt(command.substring(1));
+
+  PoombaEngines pe;
+  pe.turnRight(rotationDegrees, true);
 }
 
 String MEDP::removeProtocolIdentifier(String message) {
